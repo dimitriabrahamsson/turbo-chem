@@ -1,5 +1,5 @@
 ## turbo-chem
-### In silico structure prediction in non-targeted analysis with high-resolution mass spectrometry - From physicochemical properties to molecular structures
+### In silico structure prediction for non-targeted analysis with high-resolution mass spectrometry - From physicochemical properties to molecular structures
 
 #### Preparing the data  
 1. Start with the .cvs file called BloodExposomeLSERfinal.csv  
