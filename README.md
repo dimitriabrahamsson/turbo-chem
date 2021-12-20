@@ -5,6 +5,6 @@
 1. Start with the .cvs file called BloodExposomeLSERfinal.csv  
 2. Run blood_exposome_frag_atoms.py to generate BloodExposomeLSERfragment_atoms_R.csv  
 
-#### Run the model to convert the physicochemical fingerprints to RDKit fragments
+#### Convert the physicochemical fingerprints to RDKit fragments
 Run ANN_structure_pred.py to generate 
 
