@@ -1,5 +1,8 @@
-## turbo-chem
-### In silico structure prediction for non-targeted analysis with high-resolution mass spectrometry - From physicochemical properties to molecular structures
+## Welcome to turbo-chem!
+### Turbo-chem is an in silico structure prediction algorithm designed to propose molecular structures for chemical features detected  in non-targeted analysis with high-resolution mass spectrometry
+#### Turbo-chem is based on the idea that different molecular structures have distinctly different physicochemical properties and when these properties are put together they form a unique fingerpring - a "physicochemical fingerprint".
+
+#### The following steps will help you run turbo-chem on your computer and make structure predictions for a set of chemicals.
 
 #### Preparing the data  
 1. Start with the .cvs file called BloodExposomeLSERfinal.csv  
