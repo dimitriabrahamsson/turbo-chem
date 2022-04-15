@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 def read_data():
-    df = pd.read_csv('expfr_ts_sample3.csv')
+    df = pd.read_csv('expfr_tr_sample1.csv')
     inchi = df.loc[:, 'INCHIKEY']
     dfy = df.loc[:, 'Al_COO':'phenol_noOrthoHbond']
     dfy = np.round(dfy, 0)
