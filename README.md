@@ -4,11 +4,11 @@
 
 #### The following steps will help you run turbo-chem on your computer and make structure predictions for a set of chemicals.
 
-#### Preparing the data  
-1. Start with the .cvs file called BloodExposomeLSERfinal.csv  
-2. Run blood_exposome_frag_atoms.py to generate BloodExposomeLSERfragment_atoms_R.csv  
+#### Let's start by preparing the data  
+1. Start with the .cvs file called BloodExposomeLSERfinal.csv. This file contains the database that we will use to train the model.  
+2. Run blood_exposome_frag_atoms.py to generate BloodExposomeLSERfragment_atoms_R.csv. This step generates RDKit fragments and number of atoms for the chemicals in the database. Our model is designed to take as input equilibrium partitioning ratios (together with MS1 data) and convert these to RDKit fingerprints.
 
-#### Convert the physicochemical fingerprints to RDKit fragments
+#### Run the model to convert the physicochemical fingerprints to RDKit fragments
 Run ANN_structure_pred.py to generate the result files for the training and testing sets training_results_exposome_i1.0.csv and test_results_exposome_i1.0.csv
 
 #### Simulate the database search (for evaluation only)
