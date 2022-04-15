@@ -15,6 +15,6 @@ Run ANN_structure_pred.py to generate the result files for the training and test
 Run DB_search_sim_fr.py to simulate the database searching using data from the training and testing sets. This step is meant to be used as a preliminary step for evaluating the algorithm. Repeat once for the training set and once for the testing set. 
 
 #### Search the database with fragments generated from experimental physicochemical fingerprints
-Run DB_search_exp_sim_fr.py to search the database using RDKit fragments that were generated with experimental physicochemical fingerprints. To generate the fragments use the blood_exposome_frag_atoms.py script. In our example, the experimental data were downloaded from the UFZ-LSER database (http://www.ufz.de/lserd)
+Run DB_search_exp_sim_fr.py to search the database using RDKit fragments that were generated with experimental physicochemical fingerprints. To generate the fragments use the blood_exposome_frag_atoms.py script. In our example, the experimental data were downloaded from the UFZ-LSER database (http://www.ufz.de/lserd).
 
 
