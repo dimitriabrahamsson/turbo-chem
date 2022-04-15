@@ -12,9 +12,14 @@ Created on Fri Sep 10 15:21:10 2021
 import pandas as pd
 import numpy as np
 
-# Creating an in silico sample with 100 chemicals 
+# Create an in silico sample with 100 chemicals 
 def create_sample():
-    df = pd.read_csv('test_results_exposome_i1.0.csv')
+    df1 = pd.read_csv('training_results_exposome_i4.0.csv')
+    df2 = pd.read_csv('training_results_exposome_i4.1.csv')
+    df3 = pd.read_csv('training_results_exposome_i4.2.csv')
+    df4 = pd.read_csv('training_results_exposome_i4.3.csv')
+    df5 = pd.read_csv('training_results_exposome_i4.4.csv')
+    df = pd.concat([df1, df2, df3, df4, df5], axis=0)
     inchi = df.loc[:, 'INCHIKEY']
     dfy = df.loc[:, 'Al_COO_y':'phenol_noOrthoHbond_y']
     dfy = np.round(dfy, 0)
@@ -22,7 +27,7 @@ def create_sample():
     dfy = dfy.astype(int)
     df = pd.concat([inchi, dfy], axis=1)
     df = df.sample(n=100)     #Sample 100 random chemicals (rows)
-    return (df)
+    return(df)
 
 df = create_sample()
 
@@ -33,11 +38,13 @@ def read_database():
     db_bits = db.loc[:, 'Al_COO':'phenol_noOrthoHbond']
     db_bits.columns = db_bits.columns + '_x'
     db_mass = db.loc[:, 'AVERAGE_MASS']
+    df_form = db.loc[:, 'MOLECULAR_FORMULA']
     db1 = pd.concat([db_inchi, db_mass], axis=1)
     db2 = pd.concat([db_inchi, db_bits, db_mass], axis=1)
-    return(db1, db2)
+    db3 = pd.concat([db_inchi, df_form], axis=1)
+    return(db1, db2, db3)
 
-db1, db2 = read_database()
+db1, db2, db3 = read_database()
 
 # Get the masses for the chemicals in the sample from the database
 def get_masses():
@@ -100,28 +107,49 @@ def filterout_mismatches():
 
 dff1 = filterout_mismatches()
 
-# Select how many matches per compound you want to see .head(x)
-def show_top_matches():
-    dft = dff1.groupby('inchikey_sample').head(1)
+dff1.columns
+
+# Filter our formula mismatches
+## This step assumes that the formulas have been assigned correctly
+## and that you were able to observe the distinct isotopic patterns of chlorine and bromine
+ 
+def get_formulas():
+    dg = pd.merge(dff1, db3, left_on='inchikey_sample', right_on='INCHIKEY', how='left')
+    dg.columns = dg.columns.str.replace('MOLECULAR_FORMULA', 'formula_sample')
+    dg = dg.drop('INCHIKEY', axis=1)
+    dg = pd.merge(dg, db3, left_on='inchikey_db', right_on='INCHIKEY', how='left')
+    dg.columns = dg.columns.str.replace('MOLECULAR_FORMULA', 'formula_db')
+    dg = dg.drop('INCHIKEY', axis=1)
+    dg['formula_agr'] = np.where(dg['formula_sample'] == dg['formula_db'], 1, 0)
+    dg = dg[dg['formula_agr'] == 1]
+    return(dg)
+
+dg = get_formulas()
+
+# Print 5 files 
+# Each time matching to a different number of isomers in the database
+# Select how many matches per compound you want to see in range (x, y)
+
+def show_top_matches(i):
+    dft = dg.groupby('inchikey_sample').head(i)
     dft = dft.reset_index(drop=True)
     return(dft)
 
-dft = show_top_matches()
-
-
-# Check for correct matches
-def check_matches(dft):
-    dft['inchikey_sample'] = dft['inchikey_sample'].str.replace('_y', '')
-    dft['inchikey_db'] = dft['inchikey_db'].str.replace('_x', '')
-    dft['match'] = np.where(dft['inchikey_sample'] == dft['inchikey_db'], 1, 0)
-    print(dft)
+for i in range(1, 6):
+    dft = show_top_matches(i)
+    
+    # Check for correct matches
+    def check_matches(dft):
+        dft['match'] = np.where(dft['inchikey_sample'] == dft['inchikey_db'], 1, 0)
+        return(dft)
+    
+    dft = check_matches(dft)
+    
+    dft.to_csv('sim_tr_sample_3.{}.csv'.format(i))
     print(dft['match'].sum())
-    return(dft)
 
-dft = check_matches(dft)
 
-dft.to_csv('ts_sample 1.0.csv')
-print(dft['match'].sum())
+
 
 
 
