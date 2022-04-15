@@ -33,6 +33,8 @@ def read_and_clean():
 
 dataset = read_and_clean()
 
+dataset.to_csv('clean_dataset.csv')
+
 def assign_X():
     # Assign X and y variables
     X1 = dataset.loc[:, 'dry triolein':'Octan-1-ol/propylenecarbonate'] # Extract solvent systems from dataframe
@@ -63,9 +65,7 @@ def split():
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=None)
     
-    X_tr_in = X_train.loc[:, 'INCHIKEY'].reset_index()
-    X_ts_in = X_test.loc[:, 'INCHIKEY'].reset_index()
-    y_tr_in = y_train.loc[:, 'INCHIKEY'].reset_index()
+    y_tr_in = y_train.loc[:, 'INCHIKEY'].reset_index() # Save indexes for printing results later
     y_ts_in = y_test.loc[:, 'INCHIKEY'].reset_index()
     
     X_train = X_train.set_index('INCHIKEY')
@@ -146,7 +146,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Mean Abs Error')
 plt.legend()
 plt.ylim([0, 2.5])
-plt.xlim([0, 200])
+plt.xlim([0, 100])
 plt.show()
 #fig.savefig('train_val_entact_500_20.png', dpi=400)
 
