@@ -11,6 +11,29 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 from random import sample
+import os
+import shutil, glob
+
+
+# organizing output files
+newpath = r'/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap/neg-imputations' 
+if not os.path.exists(newpath):
+    os.makedirs(newpath)
+else:
+    shutil.rmtree(newpath)
+    os.makedirs(newpath)
+
+source = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap'
+source_ls = os.listdir(source)
+destination = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap/neg-imputations'
+
+f1 = 'BloodExposomeLSERfragment_atoms_R.csv'
+f2 = '1stExpMergedCleanneg1.0_0.1min_0.00145Da.csv'
+
+shutil.move(f1, destination)
+shutil.move(f2, destination)
+
+os.chdir(destination)
 
 for i in range(0,100):
 
@@ -30,7 +53,7 @@ for i in range(0,100):
         
         dfR = pd.read_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da.csv')
         dfR = dfR.replace(np.inf, np.NaN)
-        dfR['chem_id'] = np.round(dfR['Average Mz'], 3).astype(str) + '@' + np.round(dfR['Average Rt(min)'], 3).astype(str)
+        #dfR['chem_id'] = np.round(dfR['Average Mz'], 3).astype(str) + '@' + np.round(dfR['Average Rt(min)'], 3).astype(str)
         dfR = dfR.set_index('chem_id')
         dfR = dfR.loc[:, 'neg-octlR_log':'neg_undecR_log']
         dfR.columns = sol

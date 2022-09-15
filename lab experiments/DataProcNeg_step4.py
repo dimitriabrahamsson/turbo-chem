@@ -16,8 +16,6 @@ import matplotlib.pyplot as plt
 def read_and_prepare():
     df1 = pd.read_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da.csv')
     df1 = df1.drop('Unnamed: 0', axis=1)
-    df1['chem_id'] = (np.round(df1['Average Mz'], 3).astype(str) + 
-                    '@' + np.round(df1['Average Rt(min)'], 3).astype(str))
     df2 = pd.read_csv('neg_combined_csv.csv')
     df = pd.merge(df1, df2, on='chem_id', how='left')
     sol = ['1-octanol', 'butyl acetate', 'chloroform', 'cyclohexane',
@@ -27,6 +25,9 @@ def read_and_prepare():
 
 df, sol = read_and_prepare()
 print(df) 
+df.to_csv('neg_test_df.csv')
+
+df = df[df['octl'] != 'incomplete chemical descriptors']
 
 def fillImputed(df):
     loc1 = df.loc[:, 'neg-octlR_log':'neg_undecR_log']
@@ -44,6 +45,8 @@ def fillImputed(df):
     
 df = fillImputed(df)
 print(df)
+#df.to_csv('df_test.csv')
+
 
 def standardize_1(df):
     scaler = StandardScaler()
@@ -69,6 +72,23 @@ df = pd.concat([df, loc1, loc2], axis=1)
 print(loc1, loc2)
 print(df)
 
+scaler = StandardScaler()
+loc1 = df.loc[:, 'octl':'undec']
+oc2 = df.loc[:, '1-octanol_db_std':'n-undecane_db_std']
+
+loc1 = loc1.T
+scaler.fit(loc1)
+loc1 = scaler.transform(loc1)
+loc1 = loc1.T
+
+loci = loc2.T
+loci = scaler.inverse_transform(loci)
+loci = loci.T
+loci = pd.DataFrame(loci, columns = sol)
+loci = loci.add_suffix('_exp_rvstd')
+
+df = pd.concat([df, loci], axis=1)
+
 def correlations(df):
     loc1 = df.loc[:, '1-octanol_db_std':'n-undecane_db_std']
     loc2 = df.loc[:, '1-octanol_exp_std':'n-undecane_exp_std']
@@ -85,7 +105,7 @@ df, d1 = correlations(df)
 print(d1)
 print(df)
 
-df.to_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da_imputed.csv')
+df.to_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da_imputed_rv.csv')
 
 
 
@@ -106,7 +126,7 @@ def fig1(df):
     return(ax)
 
 ax = fig1(df)
-ax.figure.savefig('neg_R2_Vs_WRstdflag.png', dpi=300)
+ax.figure.savefig('R2_Vs_WRstdflag.png', dpi=300)
 
 
 def fig2(df):
@@ -134,13 +154,15 @@ def fig2(df):
     return(ax)
 
 ax = fig2(df)
-ax.figure.savefig('neg_R2_Vs_zeros.png', dpi=300)
+ax.figure.savefig('R2_Vs_zeros.png', dpi=300)
 
 
 
+df = df.sort_values(by='Correlation_R2', ascending=False)
+df = df.drop_duplicates(subset='Preferred_Name')
+print(df)
 
-
-
+df.to_csv('neg_final_nodups.csv')
 
 
 

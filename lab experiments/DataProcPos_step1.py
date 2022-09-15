@@ -11,10 +11,10 @@ import pandas as pd
 import seaborn as sns
 
 def readData():
-    df = pd.read_excel('Area_0_20227251754_pos.xlsx')
+    df = pd.read_csv('area_pos_ready.csv')
     entact = pd.read_excel('ENTACT_504.xlsx') 
     df1 = df.loc[:, 'Average Rt(min)':'Average Mz']
-    df2 = df.loc[:, 'pos_DIWB_1':'pos_no injection_4']
+    df2 = df.loc[:, 'SolventBlank_MQW':'SolventBlank_AB_5050']
     df3 = df.loc[:, 'pos_1-octl_1':'pos_undecW_2']
     df4 = df.loc[:, 'Average':'Stdev']
     return(entact, df1, df2, df3, df4)
@@ -63,7 +63,6 @@ def ratioAreas(df, loc1, loc2, loc3):
     loc4 = np.log10(loc4)
     loc4 = loc4.add_suffix('R_log')
     loc4 = loc4.replace(np.inf, np.NaN)
-    loc4 = loc4.replace(np.NINF, np.NaN)
     loc4['zeros'] = loc4.isna().sum(axis=1)
     df = pd.concat([df, loc4], axis=1)
     return(df, loc4)

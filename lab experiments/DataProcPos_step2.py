@@ -11,6 +11,29 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 from random import sample
+import os
+import shutil, glob
+
+
+# organizing output files
+newpath = r'/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap/pos-imputations' 
+if not os.path.exists(newpath):
+    os.makedirs(newpath)
+else:
+    shutil.rmtree(newpath)
+    os.makedirs(newpath)
+
+source = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap'
+source_ls = os.listdir(source)
+destination = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap/pos-imputations'
+
+f1 = 'BloodExposomeLSERfragment_atoms_R.csv'
+f2 = '1stExpMergedCleanpos1.0_0.1min_0.00145Da.csv'
+
+shutil.move(f1, destination)
+shutil.move(f2, destination)
+
+os.chdir(destination)
 
 for i in range(0,100):
 
@@ -61,13 +84,11 @@ for i in range(0,100):
         chemid = chemid.reset_index(drop=True)
         return(X, y, X1, chemid)
     
-    #X, y, X1, chemid = read_data(df, dfR, solS1, solS2)
-    
     
     def predict(X, y, X1, s4):
         model_ols =  linear_model.LinearRegression(normalize=True)
         model_ols.fit(X,y)
-        pred = pd.DataFrame(model_ols.predict(X), columns=['predicted_{}'.format(s4)]) # Create new dataframe of column'Predicted'
+        pred = pd.DataFrame(model_ols.predict(X), columns=['predicted_{}'.format(s4)]) # Create new dataframe of column'Predicted Price'
         actual = pd.DataFrame(y, columns=['true_{}'.format(s4)])
         actual = actual.reset_index(drop=True) # Drop the index so that we can concat it, to create new dataframe
         comp = pd.concat([actual,pred],axis =1)
@@ -75,7 +96,7 @@ for i in range(0,100):
         
         # Make predictions for experimental data
         y1 = model_ols.predict(X1)
-        pred = pd.DataFrame(y1, columns=['predicted_{}'.format(s4)]) # Create new dataframe of column'Predicted'
+        pred = pd.DataFrame(y1, columns=['predicted_{}'.format(s4)]) # Create new dataframe of column'Predicted Price'
         comp1 = pd.concat([chemid,pred], axis=1)
         return(comp1)
     

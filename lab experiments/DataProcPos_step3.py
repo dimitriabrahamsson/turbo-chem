@@ -8,6 +8,12 @@ Created on Wed Jun  1 20:15:39 2022
 
 import os, glob
 import pandas as pd
+import shutil, glob
+
+source = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap'
+
+destination = '/Users/dabrahamsson/Dropbox/UCSF postdoc/TurboChem experiments/Orbitrap/pos-imputations'
+os.chdir(destination)
 
 sol = ['1-octanol', 'butyl acetate', 'chloroform', 'cyclohexane',
        'dichloromethane', 'triolein', 'n-hexane', 'n-octane', 'oleylalcohol',

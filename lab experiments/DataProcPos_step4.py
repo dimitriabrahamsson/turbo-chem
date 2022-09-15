@@ -27,6 +27,7 @@ def read_and_prepare():
 
 df, sol = read_and_prepare()
 print(df) 
+df = df[df['octl'] != 'incomplete chemical descriptors']
 
 def fillImputed(df):
     loc1 = df.loc[:, 'pos-octlR_log':'pos_undecR_log']
@@ -44,6 +45,8 @@ def fillImputed(df):
     
 df = fillImputed(df)
 print(df)
+#df.to_csv('df_test.csv')
+
 
 def standardize_1(df):
     scaler = StandardScaler()
@@ -69,6 +72,23 @@ df = pd.concat([df, loc1, loc2], axis=1)
 print(loc1, loc2)
 print(df)
 
+scaler = StandardScaler()
+loc1 = df.loc[:, 'octl':'undec']
+oc2 = df.loc[:, '1-octanol_db_std':'n-undecane_db_std']
+
+loc1 = loc1.T
+scaler.fit(loc1)
+loc1 = scaler.transform(loc1)
+loc1 = loc1.T
+
+loci = loc2.T
+loci = scaler.inverse_transform(loci)
+loci = loci.T
+loci = pd.DataFrame(loci, columns = sol)
+loci = loci.add_suffix('_exp_rvstd')
+
+df = pd.concat([df, loci], axis=1)
+
 def correlations(df):
     loc1 = df.loc[:, '1-octanol_db_std':'n-undecane_db_std']
     loc2 = df.loc[:, '1-octanol_exp_std':'n-undecane_exp_std']
@@ -85,7 +105,7 @@ df, d1 = correlations(df)
 print(d1)
 print(df)
 
-df.to_csv('1stExpMergedCleanpos1.0_0.1min_0.00145Da_imputed.csv')
+df.to_csv('1stExpMergedCleanpos1.0_0.1min_0.00145Da_imputed_rv.csv')
 
 
 
@@ -138,9 +158,11 @@ ax.figure.savefig('R2_Vs_zeros.png', dpi=300)
 
 
 
+df = df.sort_values(by='Correlation_R2', ascending=False)
+df = df.drop_duplicates(subset='Preferred_Name')
+print(df)
 
-
-
+df.to_csv('pos_final_nodups.csv')
 
 
 

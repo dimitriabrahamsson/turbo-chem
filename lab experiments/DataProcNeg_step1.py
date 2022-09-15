@@ -11,10 +11,10 @@ import pandas as pd
 import seaborn as sns
 
 def readData():
-    df = pd.read_excel('Area_0_20227251728_neg.xlsx')
+    df = pd.read_csv('area_neg_ready.csv')
     entact = pd.read_excel('ENTACT_504.xlsx') 
     df1 = df.loc[:, 'Average Rt(min)':'Average Mz']
-    df2 = df.loc[:, 'neg_DIWB_1':'neg_no injection_4']
+    df2 = df.loc[:, 'SolventBlank_MQW':'SolventBlank_AB_5050']
     df3 = df.loc[:, 'neg_1-octl_1':'neg_undecW_2']
     df4 = df.loc[:, 'Average':'Stdev']
     return(entact, df1, df2, df3, df4)
@@ -22,7 +22,7 @@ def readData():
 entact, df1, df2, df3, df4 = readData()
 
 def massCorrect(df):
-    # Correct MS1 m/z to account for M-H
+    # Correct MS1 m/z to account for M+H
     df['Average Mz'] = df['Average Mz'] + 1.0078250319
     return(df)
     
@@ -94,6 +94,9 @@ def mergEntact(df1, df2, df3, entact):
     return(dfe)
 
 dfe = mergEntact(df1, df2, df3, entact)
+
+dfe['chem_id'] = (np.round(dfe['Average Mz'], 3).astype(str) + 
+                '@' + np.round(dfe['Average Rt(min)'], 3).astype(str))
 
 print(dfe)
 x = dfe['Mass_diff']
