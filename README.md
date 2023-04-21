@@ -2,6 +2,8 @@
 ### Turbo-chem is an in silico structure prediction algorithm designed to propose molecular structures for chemical features detected  in non-targeted analysis with high-resolution mass spectrometry
 #### Turbo-chem is based on the idea that different molecular structures have distinctly different physicochemical properties and when these properties are put together they form a unique fingerpring - a "physicochemical fingerprint".
 
+TurboChem so far has 2 versions. Version 1.0 was released as part of the study "In Silico Structure Predictions for Non-targeted Analysis: From Physicochemical Properties to Molecular Structures" published in JASMS. Version 2.0 is the latest version of the package and is part of the most recent paper "Extracting structural information from  
+
 #### The following steps will help you run turbo-chem on your computer and make structure predictions for a set of chemicals.
 
 #### Let's start by preparing the data  
