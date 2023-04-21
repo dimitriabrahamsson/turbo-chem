@@ -1,20 +1,9 @@
-## Welcome to turbo-chem!
-### Turbo-chem is an in silico structure prediction algorithm designed to propose molecular structures for chemical features detected  in non-targeted analysis with high-resolution mass spectrometry
-#### Turbo-chem is based on the idea that different molecular structures have distinctly different physicochemical properties and when these properties are put together they form a unique fingerpring - a "physicochemical fingerprint".
+## Alright, welcome to TurboChem 2.0!
 
-#### The following steps will help you run turbo-chem on your computer and make structure predictions for a set of chemicals.
+### This tutorial will guide you through the steps of using TurboChem and reproducing the data in the study "Extracting structural information from physicochemical properties - A new approach in structure elucidation for non-targeted analysis. 
 
-#### Let's start by preparing the data  
-1. Start with the .cvs file called BloodExposomeLSERfinal.csv. This file contains the database that we will use to train the model.  
-2. Run blood_exposome_frag_atoms.py to generate BloodExposomeLSERfragment_atoms_R.csv. This step generates RDKit fragments and number of atoms for the chemicals in the database. Our model is designed to take as input equilibrium partitioning ratios (together with MS1 data) and convert these to RDKit fingerprints.
+#### For simplicity purposes, let's start with the negative ionization data (ESI-) from the QTOF method.
+The script you want to start with is called DataProcNeg_step1.py. This script will read two files: 1) NegAreasExp1.xlsx and 2) ENTACT_504.xlsx. The first file contains the peak areas for all the chemical features from experiment 1 and the second file contains the chemical names and monoisotopic masses for the compounds contained in the ENTACT mixture 504. Run the script to clean the data and prepare them for the next step.
 
-#### Run the model to convert the physicochemical fingerprints to RDKit fragments
-Run ANN_structure_pred.py to generate the result files for the training and testing sets training_results_exposome_i1.0.csv and test_results_exposome_i1.0.csv. Repeat the process 5 times to generate 5 files for the training set and 5 files for the testing set.
-
-#### Simulate the database search (for evaluation only)
-Run DB_search_sim_fr.py to simulate the database searching using data from the training and testing sets. This step is meant to be used as a preliminary step for evaluating the algorithm. Repeat once for the training set and once for the testing set. 
-
-#### Search the database with fragments generated from experimental physicochemical fingerprints
-Run DB_search_exp_sim_fr.py to search the database using RDKit fragments that were generated with experimental physicochemical fingerprints. To generate the fragments use the blood_exposome_frag_atoms.py script. In our example, the experimental data were downloaded from the UFZ-LSER database (http://www.ufz.de/lserd).
-
+#### The next script is DataProcNeg_step2.py. This script will read the file you generated from the previous script and will impute the missing values based on the process described in the paper.
 
