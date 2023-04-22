@@ -28,7 +28,7 @@ for i in range(0,100):
         sol = df.columns
         print(df.columns)
         
-        dfR = pd.read_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da.csv')
+        dfR = pd.read_csv('1stExpMergedCleanNeg.csv')
         dfR = dfR.replace(np.inf, np.NaN)
         dfR['chem_id'] = np.round(dfR['Average Mz'], 3).astype(str) + '@' + np.round(dfR['Average Rt(min)'], 3).astype(str)
         dfR = dfR.set_index('chem_id')
