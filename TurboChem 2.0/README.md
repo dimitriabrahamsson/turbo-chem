@@ -8,3 +8,8 @@ The script you want to start with is called DataProcNeg_step1.py. This script wi
 #### The next script is DataProcNeg_step2.py. 
 This script will read the file you generated from the previous script and the database TurboChemDB5.2.csv to impute the missing values based on the process described in the paper.
 
+#### Now let's combine all the imputation files into one
+Move all generated files from the previous step into one folder. Run script DataProcNeg_step3.py inside that folder to combine all files into one by averaging the imputations.
+
+#### The last step in data processing
+In this final step run script DataProcNeg_step4.py to read your original peak areas and fill in the gaps using the imputations.

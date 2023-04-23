@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 
 def read_and_prepare():
-    df1 = pd.read_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da.csv')
+    df1 = pd.read_csv('1stExpMergedCleanNeg.csv')
     df1 = df1.drop('Unnamed: 0', axis=1)
     df1['chem_id'] = (np.round(df1['Average Mz'], 3).astype(str) + 
                     '@' + np.round(df1['Average Rt(min)'], 3).astype(str))
@@ -102,56 +102,7 @@ df, d1 = correlations(df)
 print(d1)
 print(df)
 
-df.to_csv('1stExpMergedCleanneg1.0_0.1min_0.00145Da_imputed_rv.csv')
-
-
-
-def fig1(df):
-    over15 = df[df['W_Rstd_flag'] == 0]['Correlation_R2']
-    under15 = df[df['W_Rstd_flag'] == 1]['Correlation_R2']
-    
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.boxplot([over15, under15], 
-               medianprops = dict(linestyle='-', linewidth=1, color='blue'),
-               #patch_artist=True,  # fill with color,
-               #boxprops=dict(color='grey', alpha =0.4),
-               labels=['over 15%', 'under 15%'])
-    
-    ax.set_ylabel('Correlation R2')
-    ax.set_xlabel('RSTD')
-    return(ax)
-
-ax = fig1(df)
-ax.figure.savefig('neg_R2_Vs_WRstdflag.png', dpi=300)
-
-
-def fig2(df):
-    z0 = df[df['zeros'] == 0]['Correlation_R2']
-    z1 = df[df['zeros'] == 1]['Correlation_R2']
-    z2 = df[df['zeros'] == 2]['Correlation_R2']
-    z3 = df[df['zeros'] == 3]['Correlation_R2']
-    z4 = df[df['zeros'] == 4]['Correlation_R2']
-    z5 = df[df['zeros'] == 5]['Correlation_R2']
-    z6 = df[df['zeros'] == 6]['Correlation_R2']
-    z7 = df[df['zeros'] == 7]['Correlation_R2']
-    z8 = df[df['zeros'] == 8]['Correlation_R2']
-    
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.boxplot([z0, z1, z2, z3, z4, z5, z6, z7, z8], 
-               medianprops = dict(linestyle='-', linewidth=1, color='blue'),
-               #patch_artist=True,  # fill with color,
-               #boxprops=dict(color='grey', alpha =0.4),
-               flierprops=dict(marker='.', markerfacecolor='blue', markeredgecolor='blue', alpha=0.9), 
-               labels=['0', '1', '2', '3', '4', '5', '6', '7', '8'])
-    
-    ax.set_ylabel('Correlation R2')
-    ax.set_xlabel('Zeros')
-    return(ax)
-
-ax = fig2(df)
-ax.figure.savefig('neg_R2_Vs_zeros.png', dpi=300)
+df.to_csv('1stExpMergedCleanNeg_imputed_rv.csv')
 
 
 
@@ -190,31 +141,3 @@ ax.figure.savefig('neg_R2_Vs_zeros.png', dpi=300)
 
 
 
-
-
-
-
-
-
-'''
-# Combine first example code
-df1 = pd.DataFrame({'A': [None, 0], 'B': [None, 4]})
-df2 = pd.DataFrame({'A': [1, 1], 'B': [3, 3]})
-df1.combine_first(df2)
-'''
-
-
-
-
-'''
-fig = sns.boxplot(x='W_Rstd_flag', y='Correlation_R2',
-                 data=df, palette='Paired')
-
-fig.figure.savefig('R2_Vs_WRstdflag.png', dpi=300)
-
-
-fig = sns.boxplot(x='zeros', y='Correlation_R2',
-                 data=df, color='darkgrey')
-plt.markers("o") 
-
-'''
