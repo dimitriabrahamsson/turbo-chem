@@ -17,6 +17,8 @@ In this final step run script DataProcNeg_step4.py to read your original peak ar
 #### Now let's make some structure predictions
 First we need to run the script called ANN_structure_pred_expData3.1.py. This script contains the artificial neural net that we will train to make predictions. The first part of the script reads the database file TurboChemDB5.2.csv and prepares the training and testing sets. Then it reads the experimental data from a file called ExpDataFragment_atoms2.0.xlsx, which contains the peak areas and the Ksw from the experiments. 
 
-Once the model is trained and it will make predictions for the training, testing and experimental sets. The output is shown in the files PredsExpData5.csv, PredsTrain5.csv, PredsTest5.csv. 
+Once the model is trained it will make predictions for the training, testing and experimental sets. The output is shown in the files PredsExpData5.csv, PredsTrain5.csv, PredsTest5.csv. 
 
-You might want to repeat the process 5 times and take the average of the 5 predictions. In this case run script AvDupsExpPreds2.0.py to average the predictions. 
+You might want to repeat the process 5 times and take the average of the 5 predictions. In this case, run script AvDupsExpPreds2.0.py to average the predictions. 
+
+And that's it! 
